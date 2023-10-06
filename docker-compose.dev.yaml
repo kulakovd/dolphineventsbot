@@ -1,0 +1,29 @@
+services:
+  caddy:
+    image: caddy:2.4.5-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile.dev:/etc/caddy/Caddyfile
+      - dolphin-caddy-data:/data
+    depends_on:
+      - backend
+      - mini-app
+  pg:
+    image: postgres:16-alpine
+    hostname: pg
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: dolphin
+    volumes:
+      - dolphin-pg-data-local:/var/lib/postgresql/data
+volumes:
+  dolphin-pg-data-local:
+    external: true
+  dolphin-caddy-data:
+    external: true
+
