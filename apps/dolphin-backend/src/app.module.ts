@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
 import { ormConfig } from './ormconfig';
+import { EventModule } from './event/event.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ormConfig } from './ormconfig';
       }),
     }),
     AuthModule,
+    EventModule,
   ],
 })
 export class AppModule {}
