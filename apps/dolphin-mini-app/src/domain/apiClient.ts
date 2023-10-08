@@ -4,7 +4,8 @@ export interface ApiClient {
   organizer: {
     // Fetches the events that the user is organizing.
     getEvents(): Promise<{ events: Event[] }>
-    createEvent(event: Omit<Event, 'id' | 'organizerId'>): Promise<void>
+    createEvent(event: Omit<Event, 'id' | 'organizerId'>): Promise<Event['id']>
     updateEvent(event: Omit<Event, 'id' | 'organizerId'>, eventId: string): Promise<void>
+    attachEvent(eventId: string): Promise<void>
   }
 }

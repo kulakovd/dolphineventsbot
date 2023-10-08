@@ -15,4 +15,5 @@ interface TelegramWebApp {
     hideProgress: () => void
   }
   close: () => void
+  start_param: string
 }

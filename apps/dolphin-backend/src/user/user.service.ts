@@ -12,13 +12,18 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  private async findUserByTelegramId(telegramId: string): Promise<UserEntity | null> {
+  private async findUserByTelegramId(
+    telegramId: string,
+  ): Promise<UserEntity | null> {
     return this.userRepository.findOneBy({
       telegramId,
     });
   }
 
-  private async updateUser(user: UserEntity, tgUser: TelegramUser): Promise<void> {
+  private async updateUser(
+    user: UserEntity,
+    tgUser: TelegramUser,
+  ): Promise<void> {
     user.firstName = tgUser.firstName;
     user.lastName = tgUser.lastName;
     user.telegramUsername = tgUser.telegramUsername;

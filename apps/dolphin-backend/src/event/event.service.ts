@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Event } from '../domain/event';
 import { EventEntity } from './event.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EventDTO } from '../organizer/dto';
+import { BotService } from '../bot/bot.service';
 
 function fillEvent(eventEntity: EventEntity, data: EventDTO) {
   eventEntity.title = data.title;
@@ -19,6 +20,7 @@ export class EventService {
   constructor(
     @InjectRepository(EventEntity)
     private eventRepository: Repository<EventEntity>,
+    private botService: BotService,
   ) {}
 
   findById(id: string): Promise<Event | null> {
@@ -106,5 +108,15 @@ export class EventService {
     fillEvent(eventEntity, event);
 
     await this.eventRepository.save(eventEntity);
+  }
+
+  async attachEventToChat(tgQueryId: string, eventId: string, lang: string) {
+    const event = await this.findById(eventId);
+
+    if (event == null) {
+      throw new BadRequestException();
+    }
+
+    this.botService.answerWebAppQuery(tgQueryId, event, lang);
   }
 }

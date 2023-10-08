@@ -3,7 +3,7 @@ import { injectApi } from '@/stores/utils/injectApi'
 import { computed, reactive, ref, watch } from 'vue'
 import { useAttachStore } from '@/stores/organizer'
 import type { Event } from '@/domain/model/event'
-import { injectTelegram } from '@/stores/utils/injectTelegram';
+import { injectTelegram } from '@/stores/utils/injectTelegram'
 
 const castDate = (date?: Date | string) => {
   if (!date) {
@@ -49,7 +49,6 @@ function createField<T>(target: EventFormField<T>) {
 
 export const useEventFormStore = defineStore('eventForm', () => {
   const api = injectApi()
-  const telegram = injectTelegram()
 
   const { events } = useAttachStore()
 
@@ -165,9 +164,11 @@ export const useEventFormStore = defineStore('eventForm', () => {
     }
 
     if (isNewEvent.value) {
-      await api.organizer.createEvent(event)
+      const newEventId = await api.organizer.createEvent(event)
+      await api.organizer.attachEvent(newEventId)
     } else if (eventId.value != null) {
       await api.organizer.updateEvent(event, eventId.value)
+      await api.organizer.attachEvent(eventId.value)
     } else {
       throw new Error('Cannot submit event form')
     }
@@ -181,8 +182,6 @@ export const useEventFormStore = defineStore('eventForm', () => {
       }
     } finally {
       isLoading.value = false
-
-      telegram.close()
     }
   }
 

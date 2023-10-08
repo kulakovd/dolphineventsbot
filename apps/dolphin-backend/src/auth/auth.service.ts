@@ -15,7 +15,8 @@ type TelegramLoginDataUser = {
   last_name: string;
   username: string;
   photo_url: string;
-}
+  language_code: string;
+};
 
 const algorithm = { name: 'HMAC', hash: 'SHA-256' };
 
@@ -121,6 +122,7 @@ export class AuthService {
     const tokenPayload = JSON.stringify({
       sub: user.id,
       queryId: parsed.query_id,
+      lang: userData.language_code,
     });
 
     return this.jwtService.sign(tokenPayload, {

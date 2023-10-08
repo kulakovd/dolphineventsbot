@@ -29,6 +29,12 @@ router.isReady().then(() => {
       telegram.BackButton.hide()
     }
   })
+
+  const startParam = new URL(location.href).searchParams.get('tgWebAppStartParam')
+  // If startParam starts with 'event-', we show the event page.
+  if (startParam?.includes('event-')) {
+    router.replace(`/event/${startParam.slice('event-'.length)}`)
+  }
 })
 
 app.use(router)

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import EventForm from '@/components/EventForm.vue'
 
 const route = useRoute()
 
@@ -8,7 +7,9 @@ const { id } = route.params as { id: string }
 </script>
 
 <template>
-  <EventForm :eventId="id" />
+  <div>
+    {{ id }}
+  </div>
 </template>
 
 <style scoped></style>

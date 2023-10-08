@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TgMainButton from '@/components/TgMainButton.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import CustomInput from '@/components/CustomInput.vue'
 import { useEventFormStore } from '@/stores/eventForm'

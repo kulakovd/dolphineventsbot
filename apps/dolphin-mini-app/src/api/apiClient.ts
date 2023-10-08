@@ -42,7 +42,7 @@ export const createApi = () => {
           }))
         }
       },
-      async createEvent(event: Omit<Event, 'id' | 'organizerId'>): Promise<void> {
+      async createEvent(event: Omit<Event, 'id' | 'organizerId'>): Promise<Event['id']> {
         const response = await fetch('/api/organizer/create-event', {
           method: 'POST',
           headers: {
@@ -55,6 +55,10 @@ export const createApi = () => {
         if (!response.ok) {
           throw new Error('Failed to create event')
         }
+
+        const json = (await response.json()) as { eventId: string }
+
+        return json.eventId
       },
       async updateEvent(event: Omit<Event, 'id' | 'organizerId'>, eventId: string): Promise<void> {
         const response = await fetch(`/api/organizer/update-event/${eventId}`, {
@@ -68,6 +72,16 @@ export const createApi = () => {
 
         if (!response.ok) {
           throw new Error('Failed to update event')
+        }
+      },
+      async attachEvent(eventId: string): Promise<void> {
+        const response = await fetch(`/api/organizer/attach-event/${eventId}`, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`
+          }
+        })
+        if (!response.ok) {
+          throw new Error('Failed to attach event')
         }
       }
     }

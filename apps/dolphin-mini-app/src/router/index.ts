@@ -23,6 +23,11 @@ const router = createRouter({
       path: '/attach/:id',
       name: 'attach-event',
       component: () => import('@/views/AttachEventView.vue')
+    },
+    {
+      path: '/event/:id',
+      name: 'event',
+      component: () => import('@/views/EventView.vue')
     }
   ]
 })

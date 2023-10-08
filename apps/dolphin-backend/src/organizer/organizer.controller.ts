@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -25,7 +26,10 @@ export class OrganizerController {
 
   @Post('create-event')
   async createEvent(@Req() req: Request, @Body() body: EventDTO) {
-    this.eventService.createEvent(req.userId, body);
+    const eventId = await this.eventService.createEvent(req.userId, body);
+    return {
+      eventId,
+    };
   }
 
   @Post('update-event/:eventId')
@@ -39,5 +43,17 @@ export class OrganizerController {
     } catch (e) {
       throw new NotFoundException();
     }
+  }
+
+  @Get('attach-event/:eventId')
+  attachEventToChat(@Req() req: Request, @Param('eventId') eventId: string) {
+    const queryId = req.tgQueryId;
+    const lang = req.userLang ?? 'en';
+
+    if (queryId == null) {
+      throw new BadRequestException();
+    }
+
+    this.eventService.attachEventToChat(queryId, eventId, lang);
   }
 }

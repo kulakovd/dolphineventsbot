@@ -8,6 +8,7 @@ import configuration from './config/configuration';
 import { ormConfig } from './ormconfig';
 import { EventModule } from './event/event.module';
 import { OrganizerModule } from './organizer/organizer.module';
+import { BotModule } from './bot/bot.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { OrganizerModule } from './organizer/organizer.module';
     AuthModule,
     EventModule,
     OrganizerModule,
+    BotModule,
   ],
 })
 export class AppModule {}
