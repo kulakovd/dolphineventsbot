@@ -9,6 +9,14 @@ type TelegramLoginData = {
   hash: string;
 };
 
+type TelegramLoginDataUser = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  username: string;
+  photo_url: string;
+}
+
 const algorithm = { name: 'HMAC', hash: 'SHA-256' };
 
 function buf2hex(buffer: ArrayBuffer) {
@@ -100,14 +108,19 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const userData = JSON.parse(parsed.user) as { id: string };
+    const userData = JSON.parse(parsed.user) as TelegramLoginDataUser;
 
-    const user = await this.userService.findOrCreateUserByTelegramId(
-      userData.id,
-    );
+    const user = await this.userService.syncUserWithTg({
+      telegramId: userData.id,
+      firstName: userData.first_name,
+      lastName: userData.last_name,
+      telegramUsername: userData.username,
+      photoUrl: userData.photo_url,
+    });
 
     const tokenPayload = JSON.stringify({
       sub: user.id,
+      queryId: parsed.query_id,
     });
 
     return this.jwtService.sign(tokenPayload, {

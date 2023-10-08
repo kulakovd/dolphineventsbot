@@ -3,6 +3,7 @@ import { User } from '../domain/user';
 import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { TelegramUser } from './telegramUser';
 
 @Injectable()
 export class UserService {
@@ -11,24 +12,37 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async findUserByTelegramId(telegramId: string): Promise<User | null> {
+  private async findUserByTelegramId(telegramId: string): Promise<UserEntity | null> {
     return this.userRepository.findOneBy({
       telegramId,
     });
   }
 
-  async createUser(telegramId: string): Promise<User> {
+  private async updateUser(user: UserEntity, tgUser: TelegramUser): Promise<void> {
+    user.firstName = tgUser.firstName;
+    user.lastName = tgUser.lastName;
+    user.telegramUsername = tgUser.telegramUsername;
+    user.photoUrl = tgUser.photoUrl;
+    await this.userRepository.save(user);
+  }
+
+  private createUser(tgUser: TelegramUser): Promise<User> {
     return this.userRepository.save({
-      telegramId,
+      telegramId: tgUser.telegramId,
+      firstName: tgUser.firstName,
+      lastName: tgUser.lastName,
+      telegramUsername: tgUser.telegramUsername,
+      photoUrl: tgUser.photoUrl,
     });
   }
 
-  async findOrCreateUserByTelegramId(telegramId: string): Promise<User> {
-    const user = await this.findUserByTelegramId(telegramId);
+  async syncUserWithTg(tgUser: TelegramUser): Promise<User> {
+    const user = await this.findUserByTelegramId(tgUser.telegramId);
     if (user != null) {
+      await this.updateUser(user, tgUser);
       return user;
     }
 
-    return this.createUser(telegramId);
+    return this.createUser(tgUser);
   }
 }

@@ -8,4 +8,16 @@ export class UserEntity implements User {
 
   @Column({ unique: true })
   telegramId: string;
+
+  @Column({ nullable: true })
+  firstName?: string;
+
+  @Column({ nullable: true })
+  lastName?: string;
+
+  @Column({ nullable: true })
+  telegramUsername?: string;
+
+  @Column({ nullable: true })
+  photoUrl?: string;
 }

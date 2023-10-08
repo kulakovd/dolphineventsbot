@@ -1,5 +1,4 @@
-export interface User {
-  id: string;
+export interface TelegramUser {
   telegramId: string;
   firstName?: string;
   lastName?: string;
