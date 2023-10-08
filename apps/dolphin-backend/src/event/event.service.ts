@@ -3,6 +3,16 @@ import { Event } from '../domain/event';
 import { EventEntity } from './event.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { EventDTO } from '../organizer/dto';
+
+function fillEvent(eventEntity: EventEntity, data: EventDTO) {
+  eventEntity.title = data.title;
+  eventEntity.description = data.description;
+  eventEntity.startDate = new Date(data.startDate);
+  eventEntity.endDate = new Date(data.endDate);
+  eventEntity.location = data.location;
+  eventEntity.maxParticipants = data.maxParticipants;
+}
 
 @Injectable()
 export class EventService {
@@ -39,7 +49,7 @@ export class EventService {
       .createQueryBuilder('event')
       .leftJoin('event.participants', 'participant')
       .where('event.id = :eventId', { eventId })
-      .getCount()
+      .getCount();
   }
 
   async addParticipant(eventId: string, participantId: string): Promise<void> {
@@ -68,5 +78,33 @@ export class EventService {
       .relation('participants')
       .of(eventId)
       .remove(participantId);
+  }
+
+  async createEvent(
+    organizerId: string,
+    event: EventDTO,
+  ): Promise<Event['id']> {
+    const eventEntity = new EventEntity();
+    eventEntity.organizerId = organizerId;
+
+    fillEvent(eventEntity, event);
+
+    await this.eventRepository.insert(eventEntity);
+
+    return eventEntity.id;
+  }
+
+  async updateEvent(
+    organizerId: string,
+    eventId: string,
+    event: EventDTO,
+  ): Promise<void> {
+    const eventEntity = await this.eventRepository.findOneOrFail({
+      where: { id: eventId, organizerId },
+    });
+
+    fillEvent(eventEntity, event);
+
+    await this.eventRepository.save(eventEntity);
   }
 }

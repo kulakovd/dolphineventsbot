@@ -18,4 +18,3 @@ export const ormConfig: DataSourceOptions = {
 const dataSource = new DataSource(ormConfig);
 
 export default dataSource;
-

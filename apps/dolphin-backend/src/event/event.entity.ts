@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Event } from '../domain/event';
 import { User } from '../domain/user';
 import { UserEntity } from '../user/user.entity';
@@ -17,8 +23,8 @@ export class EventEntity implements Event {
   @Column()
   title: string;
 
-  @Column()
-  description: string;
+  @Column({ nullable: true })
+  description?: string;
 
   @Column({ type: 'timestamp' })
   startDate: Date;
@@ -28,9 +34,6 @@ export class EventEntity implements Event {
 
   @Column({ nullable: true })
   image?: string;
-
-  @Column()
-  isOnline: boolean;
 
   @Column({ nullable: true })
   link?: string;

@@ -2,10 +2,9 @@ export interface Event {
   id: string;
   organizerId: string;
   title: string;
-  description: string;
+  description?: string;
   startDate: Date;
   endDate: Date;
-  isOnline: boolean;
   location?: string;
   link?: string;
   image?: string;

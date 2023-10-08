@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
 import { ormConfig } from './ormconfig';
 import { EventModule } from './event/event.module';
+import { OrganizerModule } from './organizer/organizer.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { EventModule } from './event/event.module';
     }),
     AuthModule,
     EventModule,
+    OrganizerModule,
   ],
 })
 export class AppModule {}
