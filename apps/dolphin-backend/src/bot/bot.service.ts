@@ -35,9 +35,8 @@ export class BotService {
   }
 
   private buildEventUrl(eventId: string): string {
-    const username = this.configService.get('telegramBotUsername');
-    const app = this.configService.get('telegramMiniAppIdentifier');
-    return `https://t.me/${username}/${app}?startapp=event-${eventId}`;
+    const appLink = this.configService.get('telegramMiniAppLink');
+    return `https://${appLink}?startapp=event-${eventId}`;
   }
 
   async answerWebAppQuery(queryId: string, event: Event, lang: string) {
