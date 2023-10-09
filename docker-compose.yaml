@@ -8,6 +8,11 @@ services:
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
       POSTGRES_USER: postgres
       POSTGRES_DB: dolphin
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - dolphin-pg-data:/var/lib/postgresql/data
   app:
@@ -27,7 +32,8 @@ services:
       DB_PASSWORD: "${POSTGRES_PASSWORD}"
       DB_DATABASE: dolphin
     depends_on:
-      - pg
+      pg:
+        condition: service_healthy
 volumes:
   dolphin-pg-data:
     external: true
