@@ -10,3 +10,15 @@ export interface Event {
   image?: string
   maxParticipants?: number
 }
+
+export type EventAnnouncement = Event & {
+  organizer: {
+    id: string
+    firstName?: string
+    lastName?: string
+    telegramUsername?: string
+    photoUrl?: string
+  }
+  participantsLimitExceeded: boolean
+  joined: boolean
+}

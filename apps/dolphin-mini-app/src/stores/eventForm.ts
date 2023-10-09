@@ -3,7 +3,6 @@ import { injectApi } from '@/stores/utils/injectApi'
 import { computed, reactive, ref, watch } from 'vue'
 import { useAttachStore } from '@/stores/organizer'
 import type { Event } from '@/domain/model/event'
-import { injectTelegram } from '@/stores/utils/injectTelegram'
 
 const castDate = (date?: Date | string) => {
   if (!date) {

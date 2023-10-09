@@ -9,6 +9,7 @@ import { ormConfig } from './ormconfig';
 import { EventModule } from './event/event.module';
 import { OrganizerModule } from './organizer/organizer.module';
 import { BotModule } from './bot/bot.module';
+import { ParticipantModule } from './participant/participant.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { BotModule } from './bot/bot.module';
     EventModule,
     OrganizerModule,
     BotModule,
+    ParticipantModule,
   ],
 })
 export class AppModule {}

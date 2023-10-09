@@ -54,7 +54,10 @@ export class EventService {
       .getCount();
   }
 
-  async addParticipant(eventId: string, participantId: string): Promise<void> {
+  async addParticipant(
+    eventId: string,
+    participantId: string,
+  ): Promise<{ participantsLimitExceeded: boolean }> {
     const event = await this.findById(eventId);
 
     if (event == null) {
@@ -64,14 +67,20 @@ export class EventService {
     const count = await this.countParticipants(eventId);
 
     if (event.maxParticipants != null && count >= event.maxParticipants) {
-      throw new Error('Cannot add participant to event');
+      return {
+        participantsLimitExceeded: true,
+      };
     }
 
-    return this.eventRepository
+    await this.eventRepository
       .createQueryBuilder('event')
       .relation('participants')
       .of(eventId)
       .add(participantId);
+
+    return {
+      participantsLimitExceeded: false,
+    };
   }
 
   removeParticipant(eventId: string, participantId: string): Promise<void> {
@@ -118,5 +127,16 @@ export class EventService {
     }
 
     this.botService.answerWebAppQuery(tgQueryId, event, lang);
+  }
+
+  async isParticipant(eventId: string, userId: string) {
+    const r = await this.eventRepository
+      .createQueryBuilder('event')
+      .leftJoin('event.participants', 'participant')
+      .where('event.id = :eventId', { eventId })
+      .andWhere('participant.id = :userId', { userId })
+      .getCount();
+
+    return r > 0;
   }
 }

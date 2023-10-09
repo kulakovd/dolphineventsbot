@@ -1,5 +1,5 @@
-import type { ApiClient } from '@/domain/apiClient'
-import type { Event } from '@/domain/model/event'
+import type { ApiClient, ParticipateResult } from '@/domain/apiClient'
+import type { Event, EventAnnouncement } from '@/domain/model/event'
 
 type EventResponse = {
   events: Array<
@@ -8,6 +8,13 @@ type EventResponse = {
       endDate: string
     }
   >
+}
+
+type EventAnnouncementResponse = {
+  event: Omit<EventAnnouncement, 'startDate' | 'endDate'> & {
+    startDate: string
+    endDate: string
+  }
 }
 
 export const createApi = () => {
@@ -82,6 +89,51 @@ export const createApi = () => {
         })
         if (!response.ok) {
           throw new Error('Failed to attach event')
+        }
+      }
+    },
+    participant: {
+      async getEvent(eventId: string) {
+        const response = await fetch(`/api/participant/event/${eventId}`, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`
+          }
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch event')
+        }
+
+        const json = (await response.json()) as EventAnnouncementResponse
+
+        return {
+          ...json.event,
+          startDate: new Date(json.event.startDate),
+          endDate: new Date(json.event.endDate)
+        }
+      },
+      async participate(eventId: string) {
+        const response = await fetch(`/api/participant/participate/${eventId}`, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`
+          }
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to participate')
+        }
+
+        return (await response.json()) as ParticipateResult
+      },
+      async cancelParticipation(eventId: string) {
+        const response = await fetch(`/api/participant/cancel-participation/${eventId}`, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`
+          }
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to cancel participation')
         }
       }
     }

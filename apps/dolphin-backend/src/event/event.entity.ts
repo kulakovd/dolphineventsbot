@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -45,5 +46,6 @@ export class EventEntity implements Event {
   maxParticipants?: number;
 
   @ManyToMany(() => UserEntity)
+  @JoinTable()
   participants: User[];
 }

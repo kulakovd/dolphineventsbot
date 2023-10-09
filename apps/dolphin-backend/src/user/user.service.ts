@@ -12,6 +12,10 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
+  findById(id: string): Promise<User | null> {
+    return this.userRepository.findOneBy({ id });
+  }
+
   private async findUserByTelegramId(
     telegramId: string,
   ): Promise<UserEntity | null> {

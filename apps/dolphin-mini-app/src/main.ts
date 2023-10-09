@@ -7,9 +7,22 @@ import App from './App.vue'
 import router from './router'
 import { createApi } from '@/api/apiClient'
 
+import { addIcons, OhVueIcon } from 'oh-vue-icons'
+import {
+  RiCheckboxCircleFill,
+  RiErrorWarningFill,
+  RiExternalLinkFill,
+  RiTimeFill,
+  RiMapPin2Fill
+} from 'oh-vue-icons/icons'
+
+addIcons(RiCheckboxCircleFill, RiErrorWarningFill, RiExternalLinkFill, RiTimeFill, RiMapPin2Fill)
+
 const telegram = (window as unknown as { Telegram: { WebApp: TelegramWebApp } }).Telegram.WebApp
 
 const app = createApp(App)
+
+app.component('Icon', OhVueIcon)
 
 app.provide('api', createApi().client)
 app.provide('telegram', telegram)
