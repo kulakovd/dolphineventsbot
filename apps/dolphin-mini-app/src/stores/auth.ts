@@ -6,6 +6,10 @@ export const useAuthStore = defineStore('auth', () => {
   const telegram = injectTelegram()
   const isAuthorized = ref(false)
 
+  /**
+   * Authenticate user with Telegram.
+   * This will send initData to the backend and receive a JWT token in response.
+   */
   async function authWithTelegram() {
     const data = telegram.initData
 

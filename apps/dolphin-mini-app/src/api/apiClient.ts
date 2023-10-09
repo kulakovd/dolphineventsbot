@@ -18,6 +18,11 @@ type EventAnnouncementResponse = {
 }
 
 export const createApi = () => {
+  /**
+   * JWT is supposed to be stored in sessionStorage with key 'token'
+   *
+   * @throws {Error} if token is not set
+   */
   function getToken(): string | null {
     const token = sessionStorage.getItem('token')
     if (token == null) {

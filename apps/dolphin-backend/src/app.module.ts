@@ -13,12 +13,15 @@ import { ParticipantModule } from './participant/participant.module';
 
 @Module({
   imports: [
+    // In production, the frontend is served by the backend
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, 'public'),
     }),
+    // ConfigModule loads the configuration from the .env file
     ConfigModule.forRoot({
       load: [configuration],
     }),
+    // TypeOrmModule loads the database configuration from the ormconfig.ts file
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         ...ormConfig,

@@ -27,6 +27,7 @@ const dates = computed(() =>
 const navigateToOrganizer = () => {
   const username = event.value?.organizer?.telegramUsername
   if (username == null) return
+  // Close app and open link inside Telegram
   telegram.openTelegramLink(`https://t.me/${username}`)
 }
 
@@ -34,8 +35,10 @@ const openLink = () => {
   const link = event.value?.link
   if (link == null) return
   if (link.startsWith('https://t.me')) {
+    // Close app and open link inside Telegram
     telegram.openTelegramLink(link)
   } else {
+    // Open link in browser
     telegram.openLink(link)
   }
 }

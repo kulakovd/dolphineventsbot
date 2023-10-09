@@ -24,8 +24,10 @@ export class ParticipantService {
     const participantsLimitExceeded =
       event.maxParticipants != null &&
       participantsCount >= event.maxParticipants;
+
     const joined = await this.eventService.isParticipant(eventId, userId);
 
+    // Apart from the event itself, we also return additional information
     return {
       ...event,
       organizer: {

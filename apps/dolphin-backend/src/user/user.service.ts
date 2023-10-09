@@ -45,6 +45,13 @@ export class UserService {
     });
   }
 
+  /**
+   * Syncs user with Telegram user.
+   * If user with given Telegram ID exists, updates it.
+   * Otherwise, creates new user.
+   *
+   * @param tgUser
+   */
   async syncUserWithTg(tgUser: TelegramUser): Promise<User> {
     const user = await this.findUserByTelegramId(tgUser.telegramId);
     if (user != null) {

@@ -1,4 +1,11 @@
 <script setup lang="ts">
+/**
+ * This component is used to display the Telegram MainButton.
+ *
+ * @file TgMainButton.vue
+ * @description Telegram MainButton component
+ */
+
 import { injectTelegram } from '@/stores/utils/injectTelegram'
 import { onMounted, onUnmounted, watch } from 'vue'
 
@@ -28,6 +35,7 @@ onMounted(() => {
   telegram.MainButton.show()
 })
 
+// sync showLoading prop with Telegram MainButton
 watch(
   () => props.showLoading,
   (showLoading) => {
@@ -39,6 +47,7 @@ watch(
   }
 )
 
+// sync text prop with Telegram MainButton
 watch(
   () => props.text,
   (text) => {

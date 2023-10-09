@@ -24,16 +24,19 @@ const app = createApp(App)
 
 app.component('Icon', OhVueIcon)
 
+// provide the ApiClient and TelegramWebApp instances to the app, so they can be injected into stores and components.
 app.provide('api', createApi().client)
 app.provide('telegram', telegram)
 
 app.use(createPinia())
 
+// Connect the BackButton to the router.
 telegram.BackButton.onClick(() => {
   router.back()
 })
 
 router.isReady().then(() => {
+  // Update the BackButton state when the route changes.
   router.afterEach(() => {
     // Thanks to vue-router, we can use history.state.back to determine if the current page is the first page.
     if (history.state.back != null) {
@@ -43,6 +46,7 @@ router.isReady().then(() => {
     }
   })
 
+  // Take the startParam from the URL and redirect to the event page. The startParam is passed from the Telegram app.
   const startParam = new URL(location.href).searchParams.get('tgWebAppStartParam')
   // If startParam starts with 'event-', we show the event page.
   if (startParam?.includes('event-')) {

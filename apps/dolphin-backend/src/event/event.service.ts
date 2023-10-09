@@ -27,6 +27,10 @@ export class EventService {
     return this.eventRepository.findOneBy({ id });
   }
 
+  /**
+   * Finds all events that are not finished yet and are organized by given user.
+   * @param organizerId
+   */
   findManyByOrganizerId(organizerId: string): Promise<Event[]> {
     return this.eventRepository
       .createQueryBuilder('event')
@@ -36,6 +40,10 @@ export class EventService {
       .getMany();
   }
 
+  /**
+   * Finds all events that are not finished yet and are attended by given user.
+   * @param participantId
+   */
   findManyByParticipantId(participantId: string): Promise<Event[]> {
     return this.eventRepository
       .createQueryBuilder('event')
@@ -66,6 +74,7 @@ export class EventService {
 
     const count = await this.countParticipants(eventId);
 
+    // If maxParticipants is set and reached, do not add participant
     if (event.maxParticipants != null && count >= event.maxParticipants) {
       return {
         participantsLimitExceeded: true,

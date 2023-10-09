@@ -12,6 +12,7 @@ export const useEventStore = defineStore('event', () => {
     event.value = await api.participant.getEvent(eventId)
   }
 
+  // Show organizer if only their first or last name is present
   const showOrganizer = computed(() => {
     return event.value?.organizer?.firstName != null || event.value?.organizer?.lastName != null
   })

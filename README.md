@@ -1,5 +1,7 @@
 # dolphin
 
+## Description
+
 This is a telegram mini app for organizing events.
 
 User can be in two roles: organizer and participant.
@@ -16,6 +18,14 @@ When user opens the app from the link, he acts as a participant.
 Participant can see the event details and join the event.
 If event is full, app shows a message about it.
 If user is already in the event, app shows a message about it and cancel button.
+
+## Tech stack
+
+- [NestJS](https://nestjs.com/)
+- [TypeORM](https://typeorm.io/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Vue.js](https://vuejs.org/)
+- [Pinia](https://pinia.vuejs.org/)
 
 ## Setup telegram bot (both for local development and production)
 
@@ -53,7 +63,7 @@ docker-compose -f docker-compose.dev.yaml up -d
 
 ### Frontend
 
-Run frontend (Mini App). Feel free to run it from your IDE.
+Run frontend (Web App). Feel free to run it from your IDE.
 ```sh
 cd apps/quiz-mini-app
 yarn
