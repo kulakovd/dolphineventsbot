@@ -21,6 +21,8 @@ onMounted(() => {
   telegram.MainButton.setText(props.text)
   if (props.showLoading) {
     telegram.MainButton.showProgress()
+  } else {
+    telegram.MainButton.hideProgress()
   }
   telegram.MainButton.onClick(handleMainButtonClick)
   telegram.MainButton.show()
@@ -28,8 +30,8 @@ onMounted(() => {
 
 watch(
   () => props.showLoading,
-  (showProgressBar) => {
-    if (showProgressBar) {
+  (showLoading) => {
+    if (showLoading) {
       telegram.MainButton.showProgress()
     } else {
       telegram.MainButton.hideProgress()

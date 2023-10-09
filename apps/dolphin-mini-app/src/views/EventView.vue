@@ -64,7 +64,7 @@ const openLink = () => {
         <span>{{ event?.location }}</span>
       </div>
       <div>
-        {{ `${event?.description} `.repeat(1) }}
+        {{ event?.description }}
       </div>
     </div>
     <div v-if="event?.participantsLimitExceeded && !event?.joined" class="participation-info">
