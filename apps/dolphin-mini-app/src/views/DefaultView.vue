@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import Welcome from '@/components/Welcome.vue'
 </script>
 
 <template>
-  <div class="default">
-    <Welcome />
-  </div>
+  <div class="default"></div>
 </template>
 
 <style scoped>

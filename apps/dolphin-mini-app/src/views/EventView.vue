@@ -81,7 +81,7 @@ const openLink = () => {
       <button class="cancel" @click="eventStore.cancelParticipation">cancel</button>
     </div>
     <TgMainButton
-      v-if="!event?.participantsLimitExceeded && !event?.joined"
+      v-if="event != null && !event?.participantsLimitExceeded && !event?.joined"
       :showLoading="isLoading"
       @click="eventStore.participate"
       text="Join"

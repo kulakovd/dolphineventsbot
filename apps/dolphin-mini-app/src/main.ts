@@ -14,7 +14,7 @@ import {
   RiExternalLinkFill,
   RiTimeFill,
   RiMapPin2Fill
-} from 'oh-vue-icons/icons'
+} from 'oh-vue-icons/icons/ri'
 
 addIcons(RiCheckboxCircleFill, RiErrorWarningFill, RiExternalLinkFill, RiTimeFill, RiMapPin2Fill)
 

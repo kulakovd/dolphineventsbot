@@ -24,13 +24,20 @@
 /* semantic color variables for this project */
 /*noinspection CssUnresolvedCustomProperty*/
 :root {
-  --color-background: var(--tg-theme-bg-color);
+  --color-backgound-default: var(--vt-c-white);
+  --color-background: var(--tg-theme-bg-color, var(--color-backgound-default));
   --color-background-secondary: var(--tg-theme-secondary-bg-color);
 
   --color-button: var(--tg-theme-button-color);
   --color-button-text: var(--tg-theme-button-text-color);
 
   --color-text: var(--tg-theme-text-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-backgound-default: var(--vt-c-black);
+  }
 }
 
 *,
@@ -43,10 +50,11 @@
 
 html {
   background: var(--color-background);
+  height: 100vh;
 }
 
 body {
-  min-height: 100vh;
+  height: 100vh;
   color: var(--color-text);
   background: var(--color-background);
   transition:
