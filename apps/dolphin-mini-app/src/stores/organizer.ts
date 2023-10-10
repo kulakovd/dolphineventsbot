@@ -13,8 +13,10 @@ export const useAttachStore = defineStore('attach', () => {
     events.splice(0, events.length, ...response.events)
   }
 
+  fetchEvents();
+
   return {
     events,
-    fetchEvents
+    fetchEvents,
   }
 })

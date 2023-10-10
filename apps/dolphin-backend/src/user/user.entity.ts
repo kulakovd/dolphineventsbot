@@ -6,8 +6,8 @@ export class UserEntity implements User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
-  telegramId: string;
+  @Column({ unique: true, type: 'int8' })
+  telegramId: number;
 
   @Column({ nullable: true })
   firstName?: string;

@@ -16,9 +16,7 @@ export class UserService {
     return this.userRepository.findOneBy({ id });
   }
 
-  private async findUserByTelegramId(
-    telegramId: string,
-  ): Promise<UserEntity | null> {
+  private async findByTelegramId(telegramId: number): Promise<UserEntity | null> {
     return this.userRepository.findOneBy({
       telegramId,
     });
@@ -53,7 +51,7 @@ export class UserService {
    * @param tgUser
    */
   async syncUserWithTg(tgUser: TelegramUser): Promise<User> {
-    const user = await this.findUserByTelegramId(tgUser.telegramId);
+    const user = await this.findByTelegramId(tgUser.telegramId);
     if (user != null) {
       await this.updateUser(user, tgUser);
       return user;

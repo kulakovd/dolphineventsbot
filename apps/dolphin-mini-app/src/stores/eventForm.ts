@@ -3,6 +3,8 @@ import { injectApi } from '@/stores/utils/injectApi'
 import { computed, reactive, ref, watch } from 'vue'
 import { useAttachStore } from '@/stores/organizer'
 import type { Event } from '@/domain/model/event'
+import { injectTelegram } from '@/stores/utils/injectTelegram';
+import { useRouter } from 'vue-router';
 
 const castDate = (date?: Date | string) => {
   if (!date) {
@@ -48,6 +50,7 @@ function createField<T>(target: EventFormField<T>) {
 
 export const useEventFormStore = defineStore('eventForm', () => {
   const api = injectApi()
+  const telegram = injectTelegram()
 
   const { events } = useAttachStore()
 
@@ -140,7 +143,7 @@ export const useEventFormStore = defineStore('eventForm', () => {
     return Object.values(formModel).every((value) => !value.invalid)
   }
 
-  async function sendData() {
+  async function sendData(): Promise<string> {
     function castString<T>(value: T): NonNullable<T> | undefined {
       if (value == null || value === '') {
         return undefined
@@ -163,22 +166,29 @@ export const useEventFormStore = defineStore('eventForm', () => {
     }
 
     if (isNewEvent.value) {
-      const newEventId = await api.organizer.createEvent(event)
-      await api.organizer.attachEvent(newEventId)
+      return await api.organizer.createEvent(event)
     } else if (eventId.value != null) {
       await api.organizer.updateEvent(event, eventId.value)
-      await api.organizer.attachEvent(eventId.value)
+      return eventId.value
     } else {
       throw new Error('Cannot submit event form')
     }
   }
 
-  async function submit() {
+  async function submit(attach?: boolean): Promise<boolean> {
     isLoading.value = true
     try {
       if (validate()) {
-        await sendData()
+        const eventId = await sendData()
+        if (attach) {
+          await api.organizer.attachEvent(eventId)
+          telegram.close()
+        }
       }
+      return true
+    } catch (e) {
+      telegram.showAlert('Something went wrong')
+      throw e
     } finally {
       isLoading.value = false
     }

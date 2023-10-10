@@ -4,6 +4,9 @@ import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import CustomInput from '@/components/CustomInput.vue'
 import { useEventFormStore } from '@/stores/eventForm'
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 
 const eventFormStore = useEventFormStore()
 const {
@@ -21,11 +24,22 @@ const {
 
 const props = defineProps<{
   eventId?: string
+  /**
+   * App is opened from attachment menu. And event should be attached to the chat after editing.
+   */
+  attach?: boolean
 }>()
 
 onMounted(() => {
-  eventFormStore.init(props.eventId)
+  eventFormStore.init(props.eventId === 'new' ? undefined : props.eventId)
 })
+
+async function submit() {
+  const success = await eventFormStore.submit(props.attach)
+  if (success) {
+    router.back()
+  }
+}
 </script>
 
 <template>
@@ -67,7 +81,11 @@ onMounted(() => {
         />
       </label>
     </form>
-    <TgMainButton text="Save and attach" :showLoading="isLoading" @click="eventFormStore.submit" />
+    <TgMainButton
+      :text="attach ? 'SAVE AND ATTACH' : 'SAVE'"
+      :showLoading="isLoading"
+      @click="submit"
+    />
   </div>
 </template>
 

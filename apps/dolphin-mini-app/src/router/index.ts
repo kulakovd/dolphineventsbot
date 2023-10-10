@@ -6,27 +6,24 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
       component: DefaultVue
     },
     {
       path: '/attach',
-      name: 'attach',
       component: () => import('@/views/AttachView.vue')
     },
     {
-      path: '/attach/new',
-      name: 'attach-new',
-      component: () => import('@/views/AttachNewEventView.vue')
+      path: '/edit/:eventId',
+      component: () => import('@/views/EditEventView.vue'),
+      props: route => ({ eventId: route.params.eventId })
     },
     {
-      path: '/attach/:id',
-      name: 'attach-event',
-      component: () => import('@/views/AttachEventView.vue')
+      path: '/attach/:eventId',
+      component: () => import('@/views/EditEventView.vue'),
+      props: route => ({ eventId: route.params.eventId, attach: true })
     },
     {
       path: '/event/:id',
-      name: 'event',
       component: () => import('@/views/EventView.vue')
     }
   ]

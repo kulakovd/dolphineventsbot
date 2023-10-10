@@ -19,7 +19,9 @@ interface TelegramWebApp {
     showProgress: () => void
     hideProgress: () => void
   }
+  expand: () => void
   close: () => void
   openLink: (url: string) => void
   openTelegramLink: (url: string) => void
+  showAlert: (text: string) => void
 }

@@ -5,7 +5,7 @@ import { EventEntity } from './event.entity';
 import { BotModule } from '../bot/bot.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([EventEntity]), BotModule],
+  imports: [TypeOrmModule.forFeature([EventEntity])],
   providers: [EventService],
   exports: [EventService],
 })

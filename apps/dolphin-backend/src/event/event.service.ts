@@ -4,13 +4,13 @@ import { EventEntity } from './event.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EventDTO } from '../organizer/dto';
-import { BotService } from '../bot/bot.service';
 
 function fillEvent(eventEntity: EventEntity, data: EventDTO) {
   eventEntity.title = data.title;
   eventEntity.description = data.description;
   eventEntity.startDate = new Date(data.startDate);
   eventEntity.endDate = new Date(data.endDate);
+  eventEntity.link = data.link;
   eventEntity.location = data.location;
   eventEntity.maxParticipants = data.maxParticipants;
 }
@@ -20,7 +20,6 @@ export class EventService {
   constructor(
     @InjectRepository(EventEntity)
     private eventRepository: Repository<EventEntity>,
-    private botService: BotService,
   ) {}
 
   findById(id: string): Promise<Event | null> {
@@ -37,6 +36,18 @@ export class EventService {
       .where('event.organizerId = :organizerId', { organizerId })
       .andWhere('event.endDate > :now', { now: new Date() })
       .orderBy('event.startDate', 'ASC')
+      .addOrderBy('event.id', 'ASC')
+      .getMany();
+  }
+
+  findManyByOrganizerIdAndSearch(organizerId: string, search: string): Promise<Event[]> {
+    return this.eventRepository
+      .createQueryBuilder('event')
+      .where('event.organizerId = :organizerId', { organizerId })
+      .andWhere('event.endDate > :now', { now: new Date() })
+      .andWhere('event.title like :search', { search: `%${search}%` })
+      .orderBy('event.startDate', 'ASC')
+      .addOrderBy('event.id', 'ASC')
       .getMany();
   }
 
@@ -51,6 +62,7 @@ export class EventService {
       .where('participant.id = :participantId', { participantId })
       .andWhere('event.endDate > :now', { now: new Date() })
       .orderBy('event.startDate', 'ASC')
+      .addOrderBy('event.id', 'ASC')
       .getMany();
   }
 
@@ -62,9 +74,16 @@ export class EventService {
       .getCount();
   }
 
+  private onParticipantAddedListeners: ((event: Event, userId: string, lang?: string) => void)[] = [];
+
+  onParticipantAdded(listener: (event: Event, userId: string, lang?: string) => void) {
+    this.onParticipantAddedListeners.push(listener);
+  }
+
   async addParticipant(
     eventId: string,
     participantId: string,
+    lang?: string,
   ): Promise<{ participantsLimitExceeded: boolean }> {
     const event = await this.findById(eventId);
 
@@ -86,6 +105,10 @@ export class EventService {
       .relation('participants')
       .of(eventId)
       .add(participantId);
+
+    this.onParticipantAddedListeners.forEach((listener) => {
+      listener(event, participantId, lang)
+    });
 
     return {
       participantsLimitExceeded: false,
@@ -128,14 +151,24 @@ export class EventService {
     await this.eventRepository.save(eventEntity);
   }
 
-  async attachEventToChat(tgQueryId: string, eventId: string, lang: string) {
+  private onAttachEventToChatListeners: ((queryId: string, event: Event, lang?: string) => void)[] = [];
+
+  onAttachEventToChat(
+    listener: (queryId: string, event: Event, lang?: string) => void,
+  ) {
+    this.onAttachEventToChatListeners.push(listener);
+  }
+
+  async attachEventToChat(tgQueryId: string, eventId: string, lang?: string) {
     const event = await this.findById(eventId);
 
     if (event == null) {
       throw new BadRequestException();
     }
 
-    this.botService.answerWebAppQuery(tgQueryId, event, lang);
+    this.onAttachEventToChatListeners.forEach((listener) => {
+      listener(tgQueryId, event, lang);
+    });
   }
 
   async isParticipant(eventId: string, userId: string) {

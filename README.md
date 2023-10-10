@@ -2,23 +2,26 @@
 
 ## Description
 
-This is a telegram mini app for organizing events.
+The app is available at https://t.me/eventizerbot
 
-User can be in two roles: organizer and participant.
+This is a mini app for Telegram designed to help you organize events, 
+share them with your friends, and join events hosted by others.
 
-Then user opens the app from attachments menu in telegram,
-he acts as an organizer and sees the list of events he created.
+Bot is accessible via inline mode to make it easy to share events in chats.
 
-Organizer can create new event or edit existing event.
-Once event is created, bot send a message to the chat with the link to the event.
-Also, the organizer can send existing event to the chat.
+You can manage your events using the web app, which is accessible via the bot's menu button.
 
-When user opens the app from the link, he acts as a participant.
+The app supports attachment menu.
+When accessed from attachment menu, the app shows events list, that can be edited before sending to the chat.
 
-Participant can see the event details and join the event.
-If event is full, app shows a message about it.
-If user is already in the event, app shows a message about it and cancel button.
+If you click on a direct link to an event, 
+you'll be able to see detailed information about that event and join it. 
+If the event is already full, the app will notify you. 
+Similarly, if you're already a participant in the event, 
+the app will display a message and offer you a cancel button.
 
+When you join an event, 
+the bot automatically sends you a message containing all the details about the event.
 ## Tech stack
 
 - [NestJS](https://nestjs.com/)
@@ -30,10 +33,13 @@ If user is already in the event, app shows a message about it and cancel button.
 ## Setup telegram bot (both for local development and production)
 
 Use [BotFather](https://t.me/botfather) to perform the following steps:
-1. Create a new bot using.
-2. Create mini app.
-3. Setup attachments menu for the bot. Ensure it enabled for all chat types. 
-4. Use `https://<your domain>/attach` as URL for the attachments' menu. For development use `https://dolphin.dmku.local/attach`.
+1. Create a new bot
+2. Create mini app
+3. Set URL. For development use `https://dolphin.dmku.local/`
+4. Turn on inline mode for the bot
+5. Setup menu button to open mini app. For development use `https://dolphin.dmku.local/`
+6. Setup attachments menu for the bot. Ensure it enabled for all chat types
+7. Set URL for the attachments' menu. For development use `https://dolphin.dmku.local/attach`
 
 ## Local development
 

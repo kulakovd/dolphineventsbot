@@ -1,6 +1,6 @@
 export interface User {
   id: string;
-  telegramId: string;
+  telegramId: number;
   firstName?: string;
   lastName?: string;
   telegramUsername?: string;

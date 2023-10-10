@@ -42,8 +42,8 @@ export class ParticipantService {
     };
   }
 
-  addEvent(userId: string, eventId: string) {
-    return this.eventService.addParticipant(eventId, userId);
+  addEvent(userId: string, eventId: string, lang?: string) {
+    return this.eventService.addParticipant(eventId, userId, lang);
   }
 
   removeEvent(userId: string, eventId: string) {

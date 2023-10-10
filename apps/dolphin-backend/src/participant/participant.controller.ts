@@ -19,9 +19,10 @@ export class ParticipantController {
   @Get('participate/:eventId')
   async addEvent(@Req() req: Request, @Param('eventId') eventId: string) {
     const userId = req.userId;
+    const lang = req.userLang;
 
     const { participantsLimitExceeded } =
-      await this.participantService.addEvent(userId, eventId);
+      await this.participantService.addEvent(userId, eventId, lang);
 
     return {
       participantsLimitExceeded,
