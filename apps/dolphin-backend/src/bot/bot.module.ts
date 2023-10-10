@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { BotService } from './bot.service';
 import { ConfigModule } from '@nestjs/config';
-import { HttpModule } from '@nestjs/axios';
 import { EventModule } from '../event/event.module';
 import { UserModule } from '../user/user.module';
 
