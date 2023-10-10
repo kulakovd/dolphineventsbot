@@ -1,4 +1,4 @@
-# dolphin
+# eventizerbot (aka dolphin)
 
 ## Description
 
