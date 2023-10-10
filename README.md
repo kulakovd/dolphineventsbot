@@ -85,6 +85,11 @@ TELEGRAM_MINI_APP_LINK=<your telegram mini app link> # e.g. t.me/usernamebot/app
 ACCESS_TOKEN_SECRET=<your access token secret>
 ```
 
+If you want to use the bot in telegram test environment, you need to add the following variable:
+```
+TELEGRAM_TEST_ENVIRONMENT='true'
+```
+
 Prepare backend dependencies and database
 ```sh
 cd apps/dolphin-backend
@@ -126,6 +131,7 @@ TELEGRAM_BOT_TOKEN=<your telegram bot token>
 TELEGRAM_MINI_APP_LINK=<your telegram mini app link> # e.g. t.me/usernamebot/app
 ACCESS_TOKEN_SECRET=<your access token secret>
 POSTGRES_PASSWORD=<your postgres password>
+MINI_APP_URL=<your domain> # e.g. https://dolphin.dmku.local
 ```
 
 If you want to use the bot in telegram test environment, you need to add the following variable:
